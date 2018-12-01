@@ -22,25 +22,25 @@
 #include <stdint.h>
 
 #include "Framebuffer.h"
-#include "FramebufferException.h"
+#include "TPGException.h"
 
 Framebuffer::Framebuffer(const char *device)
 {
   handle = open(device, O_RDWR);
   if (handle < 0)
-    throw FramebufferException("unable to open framebuffer device '%s'", device);
+    throw TPGException("unable to open framebuffer device '%s'", device);
 
   if (ioctl(handle, FBIOGET_FSCREENINFO, &screeninfo) < 0)
   {
     close();
 
-    throw FramebufferException("unable to get Screeninfo for framebuffer device '%s'", device);
+    throw TPGException("unable to get Screeninfo for framebuffer device '%s'", device);
   }
   if (ioctl(handle, FBIOGET_VSCREENINFO, &varScreeninfo) < 0)
   {
     close();
 
-    throw FramebufferException("unable to get VScreeninfo for framebuffer device '%s'", device);
+    throw TPGException("unable to get VScreeninfo for framebuffer device '%s'", device);
   }
 
   memory = (uint8_t*) mmap(0, screeninfo.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, handle, 0);
@@ -48,7 +48,7 @@ Framebuffer::Framebuffer(const char *device)
   {
     close();
 
-    throw FramebufferException("unable to get VScreeninfo for framebuffer device '%s'", device);
+    throw TPGException("unable to get VScreeninfo for framebuffer device '%s'", device);
   }
 }
 
@@ -97,7 +97,7 @@ void Framebuffer::rectangle(unsigned x1, unsigned y1, unsigned x2, unsigned y2, 
 void Framebuffer::setPixel(unsigned x, unsigned y, uint16_t color)
 {
   if (memory == nullptr)
-    throw FramebufferException("Framebuffer not open");
+    throw TPGException("Framebuffer not open");
 
   if (x < varScreeninfo.xres && y < varScreeninfo.yres)
   {
@@ -110,7 +110,7 @@ void Framebuffer::setPixel(unsigned x, unsigned y, uint16_t color)
 void Framebuffer::rectangleFilled(unsigned x1, unsigned y1, unsigned x2, unsigned y2, uint16_t color)
 {
   if (memory == nullptr)
-    throw FramebufferException("Framebuffer not open");
+    throw TPGException("Framebuffer not open");
 
   if (x2 < x1)
     std::swap(x1, x2);
@@ -135,7 +135,7 @@ void Framebuffer::rectangleFilled(unsigned x1, unsigned y1, unsigned x2, unsigne
 void Framebuffer::saveScreen()
 {
   if (memory == nullptr)
-    throw FramebufferException("Framebuffer not open");
+    throw TPGException("Framebuffer not open");
 
   if (saveMemory == nullptr)
     saveMemory = new uint8_t [screeninfo.smem_len];
@@ -147,7 +147,7 @@ void Framebuffer::saveScreen()
 void Framebuffer::restoreScreen()
 {
   if (memory == nullptr)
-    throw FramebufferException("Framebuffer not open");
+    throw TPGException("Framebuffer not open");
 
   if (saveMemory)
     memcpy(memory, saveMemory, screeninfo.smem_len);
@@ -156,7 +156,7 @@ void Framebuffer::restoreScreen()
 void Framebuffer::drawSprite(unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse)
 {
   if (memory == nullptr)
-    throw FramebufferException("Framebuffer not open");
+    throw TPGException("Framebuffer not open");
 
   if (x < varScreeninfo.xres && y < varScreeninfo.yres)
   {

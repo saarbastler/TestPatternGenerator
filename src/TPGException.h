@@ -1,12 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   FramebufferException.h
- * Author: Joerg
+ * GNU General Public License v3.0
+ * File:   Test Pattern Generator Exception.h
+ * Author: Saarbastler, joerg@saarbastler.de
  *
  * Created on 29. November 2018, 18:20
  */
@@ -20,11 +15,11 @@
 #include <string>
 #include <linux/fb.h>
 
-class FramebufferException : public std::exception
+class TPGException : public std::exception
 {
 public:
   
-  FramebufferException(const char *format, ...)
+  TPGException(const char *format, ...)
   {
     va_list args;
     va_start(args, format);

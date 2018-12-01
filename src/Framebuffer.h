@@ -1,14 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Framebuffer.h
- * Author: Joerg
+ * GNU General Public License v3.0
  *
- * Created on 29. November 2018, 18:10
+ * File:   Framebuffer.h
+ * Author: Saarbastler, joerg@saarbastler.de
  */
 
 #ifndef FRAMEBUFFER_H
@@ -17,6 +11,9 @@
 #include <cstdint>
 #include <linux/fb.h>
 
+/**
+ * Direct Framebuffer access, works only on RGB565 Display
+ */
 class Framebuffer
 {
 public:
@@ -27,22 +24,78 @@ public:
   Framebuffer(const char *device);
   virtual ~Framebuffer();
   
+  /**
+   * save the screen content in a buffer
+   */
   void saveScreen();
+  
+  /**
+   * restore the Screen from the buffer
+   */
   void restoreScreen();
   
+  /**
+   * Calculate the Color from single Red/GreenBlue values
+   * @param r Red 0..255 (only 5 upper Bits used)
+   * @param g Green 0..255 (only 6 upper Bits used)
+   * @param b Blue 0..255 (only 5 upper Bits used)
+   * @return the 16 Bit color Value
+   */
   static inline uint16_t defineColor(uint8_t r, uint8_t g, uint8_t b)
   {
     return ((r & 0xf8) << (11-3)) | ((g & 0xf0) << (5-2)) | ((b & 0xf8) >> 3);
   }
   
+  /**
+   * ste a Pixel
+   * @param x the X coordinate
+   * @param y the Y coordinate
+   * @param color the Pixel color
+   */
   void setPixel(unsigned x, unsigned y, uint16_t color);
 
+  /**
+   * draw a rectangle
+   * @param x1 first corner x 
+   * @param y1 first corner y
+   * @param x2 opposide corner x
+   * @param y2 opposide corner y
+   * @param color the rectangles color
+   */
   void rectangle(unsigned x1, unsigned y1, unsigned x2, unsigned y2, uint16_t color);
   
+  /**
+   * draw a filled rectangle
+   * @param x1 first corner x 
+   * @param y1 first corner y
+   * @param x2 opposide corner x
+   * @param y2 opposide corner y
+   * @param color the rectangles color
+   */
   void rectangleFilled(unsigned x1, unsigned y1, unsigned x2, unsigned y2, uint16_t color);
 
+  /**
+   * Draw a Sprite. The Sprite is stored as 16 Bit color values starting at left top, row per row.
+   * 
+   * @param x The left x coordinate to draw
+   * @param y The top x coordinate to draw
+   * @param data pointer to the sprite data
+   * @param width the sprite width
+   * @param height the sprite height
+   * @param reverse if ture, reverse the sprite horizontally
+   */
   void drawSprite( unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse);
   
+  unsigned xres()
+  {
+    return varScreeninfo.xres;
+  }
+  
+  unsigned yres()
+  {
+    return varScreeninfo.yres;
+  }
+
 private:
 
   void close();

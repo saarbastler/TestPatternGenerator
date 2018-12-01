@@ -17,6 +17,7 @@
 #include <chrono>
 
 #include "Framebuffer.h"
+#include "TouchScreen.h"
 #include "icons.h"
 
 /*
@@ -25,6 +26,7 @@
 int main(int argc, char** argv)
 {
   Framebuffer fb("/dev/fb1");
+  TouchScreen touch("/dev/input/event0", fb.xres(), fb.yres());
   
   fb.saveScreen();
 
@@ -41,8 +43,12 @@ int main(int argc, char** argv)
   fb.drawSprite(166, 90, sprite2, 138, 140, false);
   fb.drawSprite(323, 90, sprite1, 146, 142, false);
   
-  std::this_thread::sleep_for(std::chrono::seconds(5));
-    
+  for(unsigned i=0;i < 500;i++)
+  {
+    touch.readEvents();
+  
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }  
   fb.restoreScreen();
   
   return 0;
