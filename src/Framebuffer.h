@@ -82,9 +82,12 @@ public:
    * @param data pointer to the sprite data
    * @param width the sprite width
    * @param height the sprite height
-   * @param reverse if ture, reverse the sprite horizontally
+   * @param reverse if true, reverse the sprite horizontally
+   * @param backgroundColor background color to replace
+   * @param backgroundColorReplace replacement of background color
    */
-  void drawSprite( unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse);
+  void drawSprite( unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse
+  , uint16_t backgroundColor = 1, uint16_t backgroundColorReplace = 1);
   
   unsigned xres()
   {

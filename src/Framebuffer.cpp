@@ -153,7 +153,8 @@ void Framebuffer::restoreScreen()
     memcpy(memory, saveMemory, screeninfo.smem_len);
 }
 
-void Framebuffer::drawSprite(unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse)
+void Framebuffer::drawSprite(unsigned x, unsigned y, const uint16_t* data, unsigned width, unsigned height, bool reverse
+  , uint16_t backgroundColor, uint16_t backgroundColorReplace)
 {
   if (memory == nullptr)
     throw TPGException("Framebuffer not open");
@@ -173,13 +174,25 @@ void Framebuffer::drawSprite(unsigned x, unsigned y, const uint16_t* data, unsig
         const uint16_t *source = data;
         for (unsigned i = 0; i < width; i++)
           if (i+x < varScreeninfo.xres)
-            *ptr++ = *--source;
+          {
+            uint16_t color= *--source;
+            if( color == backgroundColor)
+              color= backgroundColorReplace;
+            
+            *ptr++ = color;
+          }
       }
       else
       {
         for (unsigned i = 0; i < width; i++)
           if (i+x < varScreeninfo.xres)
-            *ptr++ = *data++;
+          {
+            uint16_t color= *data++;
+            if( color == backgroundColor)
+              color= backgroundColorReplace;
+            
+            *ptr++ = color;
+          }
       }
     }
   }
