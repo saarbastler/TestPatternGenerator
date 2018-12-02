@@ -161,6 +161,8 @@ void TestPatternGenerator::showPicture(unsigned index)
   {
     std::string cmd(path);
     cmd += "/show.sh ";
+    cmd += path;
+    cmd += '/';
     cmd += files[index];
     
     int error = execl("/bin/sh", "sh", "-c", cmd.c_str(), nullptr);
