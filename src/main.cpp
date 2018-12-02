@@ -16,76 +16,32 @@
 #include <thread>
 #include <chrono>
 #include <array>
+#include <iostream>
 
-#include "Framebuffer.h"
-#include "TouchScreen.h"
-#include "icons.h"
-
-struct SpriteDef
-{
-  const uint16_t *data;
-  unsigned width;
-  unsigned height;
-  bool reverse;
-  unsigned xPaint;
-  unsigned yPaint;
-};
-
-std::array<SpriteDef,3> sprites {{
-  { sprite1, 146, 142, true,    6, 90 },
-  { sprite2, 138, 140, false, 166, 90 },
-  { sprite1, 146, 142, false, 323, 90 }
-                                 }};
+#include "TestPatternGenerator.h"
 /*
  * 
  */
 int main(int argc, char** argv)
 {
-  Framebuffer fb("/dev/fb1");
-  TouchScreen touch("/dev/input/event0", fb.xres(), fb.yres(), [&fb](TouchScreen::AreaTouch touch, int areaId)
+  if( argc != 4)
   {
-    if( areaId >= 0 )
-    {
-      const SpriteDef& sd= sprites[areaId];
-      
-      if( touch == TouchScreen::AreaTouch::Enter )
-        fb.drawSprite( sd.xPaint, sd.yPaint, sd.data, sd.width, sd.height, sd.reverse, 0, Framebuffer::defineColor(0xc0, 0xc0, 0xc0));
-      else
-        fb.drawSprite( sd.xPaint, sd.yPaint, sd.data, sd.width, sd.height, sd.reverse);
-    }
-  });
-  
-  fb.saveScreen();
-
-  fb.rectangleFilled(0, 80, 479, 242, 0);
-  
-  for(unsigned i=0;i < 3;i++)
-  {
-    unsigned x= i* 159;
-    fb.rectangle(x,   82, x + 157, 240, Framebuffer::defineColor(128,128,128));
-    fb.rectangle(x+1, 83, x + 156, 239, Framebuffer::defineColor(128,128,128));
+    std::cout << "TestPatternGenerator usage:" << std::endl
+      << "tpg framebufferDevice inputDevice path" << std::endl
+      << "  framebufferDevice is typically /dev/fb1" << std::endl
+      << "  inputDevice is typicall /dev/input/event0"<< std::endl
+      << "  path is the path to the images and scripts"<< std::endl;
+    
+    exit (-1);
   }
+  TestPatternGenerator testPatternGenerator( argv[1], argv[2], argv[3]); //"/dev/fb1", "/dev/input/event0");
   
-  for(auto it= sprites.begin(); it != sprites.end(); it++)
+  for(;;)
   {
-    fb.drawSprite( it->xPaint, it->yPaint, it->data, it->width, it->height, it->reverse);
-    touch.addArea( {it - sprites.begin(), it->xPaint, it->yPaint, it->width, it->height} );
-  }
-  /*fb.drawSprite(  6, 90, sprite1, 146, 142, true);
-  fb.drawSprite(166, 90, sprite2, 138, 140, false);
-  fb.drawSprite(323, 90, sprite1, 146, 142, false);
-  
-  touch.addArea({0,   0, 82, 159, 160});
-  touch.addArea({1, 159, 82, 159, 160});
-  touch.addArea({2, 318, 82, 159, 160});*/
-  
-  for(unsigned i=0;i < 500;i++)
-  {
-    touch.readEvents();
+    testPatternGenerator.touchScreen().readEvents();
   
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }  
-  fb.restoreScreen();
   
   return 0;
 }

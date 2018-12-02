@@ -148,7 +148,7 @@ void TouchScreen::touchEvent(TouchEvent touchEvent)
       touchDown= true;
       break;
     case TouchEvent::Untouch:
-      std::cout << "Done " << lastAreaIndex << std::endl;
+      //std::cout << "Done " << lastAreaIndex << std::endl;
       
       id= lastAreaIndex < 0 ? -1 : areas[lastAreaIndex].id;
       callback(AreaTouch::Clicked, id);
@@ -160,7 +160,7 @@ void TouchScreen::touchEvent(TouchEvent touchEvent)
       //std::cout << "(" << touch.x << "," << touch.y << "):" << areaIndex << std::endl;
       if( areaIndex != lastAreaIndex)
       {
-        std::cout << "leave " << lastAreaIndex << " enter " << areaIndex << std::endl;
+        //std::cout << "leave " << lastAreaIndex << " enter " << areaIndex << std::endl;
         
         id= lastAreaIndex < 0 ? -1 : areas[lastAreaIndex].id;
         callback(AreaTouch::Leave, id);

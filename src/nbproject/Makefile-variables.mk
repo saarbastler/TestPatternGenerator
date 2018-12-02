@@ -17,8 +17,8 @@ CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/src.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=src
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/src
+CND_ARTIFACT_NAME_Release=tpg
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/tpg
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
 CND_PACKAGE_NAME_Release=src.tar
 CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/src.tar

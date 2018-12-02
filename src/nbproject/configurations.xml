@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>Framebuffer.h</itemPath>
       <itemPath>TPGException.h</itemPath>
+      <itemPath>TestPatternGenerator.h</itemPath>
       <itemPath>TouchScreen.h</itemPath>
       <itemPath>icons.h</itemPath>
     </logicalFolder>
@@ -17,6 +18,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Framebuffer.cpp</itemPath>
+      <itemPath>TestPatternGenerator.cpp</itemPath>
       <itemPath>TouchScreen.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -51,6 +53,10 @@
       </item>
       <item path="TPGException.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="TestPatternGenerator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TestPatternGenerator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="TouchScreen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="TouchScreen.h" ex="false" tool="3" flavor2="0">
@@ -79,12 +85,19 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/tpg</output>
+        </linkerTool>
       </compileType>
       <item path="Framebuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Framebuffer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TPGException.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TestPatternGenerator.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TestPatternGenerator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TouchScreen.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -46,6 +46,11 @@ public:
     areas.emplace_back(touchArea);
   }
   
+  void clearAreas()
+  {
+    areas.clear();
+  }
+  
   void readEvents();
   
 private:
